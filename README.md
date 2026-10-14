@@ -2,6 +2,18 @@
 
 macOS 메뉴바에서 채팅, 할일, 메모를 여는 Python 데스크톱 컴패니언.
 
+## 앱 화면
+
+발표자료 `Design_System.pptx`에 수록된 Myorii 화면입니다. 채팅의 코드블록 답변, 오늘의 할 일, 메모 목록과 편집 화면을 보여줍니다.
+
+| 채팅 | 할 일 |
+| :---: | :---: |
+| <img src="docs/screenshots/presentation/01-chat.png" alt="코드블록 답변과 복사 버튼이 보이는 채팅 화면" width="320" /> | <img src="docs/screenshots/presentation/02-todo.png" alt="오늘의 할 일 목록과 완료 체크 화면" width="320" /> |
+
+| 메모 목록 | 메모 편집 |
+| :---: | :---: |
+| <img src="docs/screenshots/presentation/03-memo.png" alt="메모 미리보기 카드와 새 메모 버튼" width="320" /> | <img src="docs/screenshots/presentation/04-memo-editor.png" alt="마크다운 서식이 보이는 메모 편집 화면" width="320" /> |
+
 ## 메뉴바에서 이어지는 작업
 
 작업 중 작은 팝오버에서 모델에 질문하고, 답변의 코드나 이름을 복사하고, 필요한 내용을 메모로 남긴다. 대화 모델은 Ollama 또는 OpenAI·Gemini·Anthropic API 중 선택한다. 할일과 메모는 SQLite에 저장하며 채팅에서도 추가·조회·수정·삭제할 수 있다.
