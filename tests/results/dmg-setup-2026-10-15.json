@@ -6,8 +6,8 @@
   "fresh_model_download": "passed: isolated server port 11439, empty temporary model store, qwen3-vl:4b-instruct pull and load",
   "existing_model_reuse": "passed",
   "native_ui": "setup dialog layout and actual chat from app copied out of DMG passed",
-  "dmg_bytes": 54131625,
-  "sha256": "dd00eede784542b2504ad3fe25d47ce850155ac6a232c1d57a369a99093a91fd",
+  "dmg_bytes": 54925255,
+  "sha256": "dad0ba30175bda98b2fdbc7d87e5173f3acf997b5df8e6c2be0bc43b8b2374aa",
   "limitations": [
     "No clean separate Mac / Gatekeeper first-run test",
     "No Intel hardware test",
@@ -46,5 +46,6 @@
   "frozen_os_check": {
     "macos": "27.0.1",
     "local_install_supported": true
-  }
+  },
+  "install_guide": "2-page annotated PDF visually inspected; mounted DMG PDF byte-identical to source, TXT removed"
 }

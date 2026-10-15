@@ -40,7 +40,7 @@ def main():
         stage = Path(folder)
         run('ditto', str(app), str(stage / app.name))
         (stage / 'Applications').symlink_to('/Applications')
-        shutil.copyfile(ROOT / 'packaging/macos/INSTALL.txt', stage / '설치 안내.txt')
+        shutil.copyfile(ROOT / 'output/pdf/Myorii-install-guide.pdf', stage / '설치 안내.pdf')
         run('hdiutil', 'create', '-volname', 'Myorii', '-srcfolder', str(stage),
             '-ov', '-format', 'UDZO', str(dmg))
     run('hdiutil', 'verify', str(dmg))

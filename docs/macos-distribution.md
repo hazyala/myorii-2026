@@ -4,7 +4,7 @@
 
 프로젝트의 가상 환경에서 `python scripts/build_dmg.py`를 실행한다. 검은 묘리 원본(`assets/characters/myorii_profile.png`)으로 ICNS를 만들고 PyInstaller로 Python·Qt·인증서·리소스를 포함한 앱을 빌드한다. `dist/Myorii-macOS-arm64.dmg`와 SHA-256 파일이 생성된다. Intel Mac에서는 해당 아키텍처의 Python과 의존성으로 별도 빌드하며 파일명은 x86_64가 된다. 빌드 결과는 Git에 넣지 않는다.
 
-DMG에는 Myorii.app, Applications 바로가기, 설치 안내가 들어간다. 웹 다운로드 링크로 배포할 수 있으며 로컬 추론용 서버를 운영할 필요는 없다. 현재 결과물은 ad-hoc 서명만 있는 테스트 배포본으로 Developer ID 서명·공증은 포함하지 않는다. Gatekeeper를 해제하거나 다운로드 격리 속성을 제거하는 동작은 없다. 다른 Mac의 첫 실행 허용은 사용자가 macOS 안내에 따라 결정해야 한다.
+DMG에는 Myorii.app, Applications 바로가기, 그림이 포함된 `설치 안내.pdf`가 들어간다. 웹 다운로드 링크로 배포할 수 있으며 로컬 추론용 서버를 운영할 필요는 없다. 현재 결과물은 ad-hoc 서명만 있는 테스트 배포본으로 Developer ID 서명·공증은 포함하지 않는다. Gatekeeper를 해제하거나 다운로드 격리 속성을 제거하는 동작은 없다. 다른 Mac의 첫 실행 허용은 사용자가 macOS 안내에 따라 결정해야 한다.
 
 ## 첫 실행
 
@@ -42,3 +42,7 @@ DMG에는 Myorii.app, Applications 바로가기, 설치 안내가 들어간다. 
 OS 27에서도 'macOS 14 이상 필요'가 나타난 원인은 동적으로 읽는 표준 platform 모듈의 plistlib 의존성이 번들에 누락되어 버전 조회가 빈 문자열을 반환했기 때문이다. 이 빈 값을 0으로 간주하던 검사도 함께 수정했다.
 
 이제 plistlib를 명시적으로 포함해 시스템 ProductVersion을 읽고, 실패하면 호환 버전 모드를 끈 `/usr/bin/sw_vers -productVersion`을 사용한다. 둘 다 실패하면 버전 확인 실패로 안내하며 구버전이라고 판단하지 않는다. 빌드 과정은 완성된 Myorii.app의 `--check-install-environment`를 실행해 실제 macOS 버전과 일치하는지 검증한 뒤에만 DMG를 생성한다. 14·15·26·27 버전, 실제 구버전, 조회 실패를 포함한 전체 자동 테스트 89개가 통과했다.
+
+### 그림 설치 안내
+
+텍스트 안내를 2페이지 PDF로 교체했다. 사용자가 제공한 설치 창과 보안 설정 스크린샷 위에 벡터 화살표·강조 테두리·순서 번호를 표시한다. 원본 이미지는 `packaging/macos/guide-images/`, 생성 코드는 `scripts/build_install_guide.py`, 배포 PDF는 `output/pdf/Myorii-install-guide.pdf`에 둔다. PDF를 수정할 때는 reportlab이 있는 Python으로 생성 스크립트를 실행하고 두 페이지를 렌더링해 확인한 다음 DMG를 빌드한다. 일반 DMG 빌드는 저장된 PDF를 사용하므로 reportlab이 필요하지 않다.
