@@ -7,6 +7,8 @@ import subprocess
 import sys
 import tempfile
 
+from build_uninstaller import build as build_uninstaller
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -34,14 +36,16 @@ def main():
     if report['macos'] != actual or not report['local_install_supported']:
         raise RuntimeError(f'Frozen app OS detection failed: {report}, actual={actual}')
     print('Frozen app installation environment:', report)
+    uninstaller = build_uninstaller()
     arch = subprocess.check_output(['uname', '-m'], text=True).strip()
-    dmg = ROOT / f'dist/Myorii-macOS-{arch}.dmg'
+    dmg = ROOT / f'dist/Myorii-v1.0-macOS-{arch}.dmg'
     with tempfile.TemporaryDirectory(prefix='myorii-dmg-') as folder:
         stage = Path(folder)
         run('ditto', str(app), str(stage / app.name))
+        run('ditto', str(uninstaller), str(stage / uninstaller.name))
         (stage / 'Applications').symlink_to('/Applications')
-        shutil.copyfile(ROOT / 'output/pdf/Myorii-install-guide.pdf', stage / '설치 안내.pdf')
-        run('hdiutil', 'create', '-volname', 'Myorii', '-srcfolder', str(stage),
+        shutil.copyfile(ROOT / 'output/pdf/Myorii-install-guide.pdf', stage / '설치 및 삭제 안내.pdf')
+        run('hdiutil', 'create', '-volname', 'Myorii v1.0', '-srcfolder', str(stage),
             '-ov', '-format', 'UDZO', str(dmg))
     run('hdiutil', 'verify', str(dmg))
     digest = hashlib.file_digest(dmg.open('rb'), 'sha256').hexdigest()

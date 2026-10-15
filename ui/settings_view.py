@@ -4,8 +4,8 @@ from ui.preferences import set_local_style
 
 from ui.preferences import (tr, localized_label, localized_button, set_localized_text, set_localized_placeholder, color, stylesheet)
 
-from PyQt6.QtCore import QSize, Qt, pyqtSignal
-from PyQt6.QtGui import QColor, QPixmap
+from PyQt6.QtCore import QSize, Qt, QUrl, pyqtSignal
+from PyQt6.QtGui import QColor, QPixmap, QDesktopServices
 from PyQt6.QtWidgets import (
     QApplication,
     QButtonGroup,
@@ -303,8 +303,16 @@ class SettingsView(QWidget):
         version.add_control(version_value)
         section.add_row(version)
 
-        for title,notice in (("도움말", "도움말 사이트는 추후 구현 예정입니다."),
-                             ("문의 및 제안", "heamin0603@naver.com")):
+        help_row = SettingsRow("도움말")
+        help_button = localized_button("도움말 사이트 열기")
+        help_button.setObjectName("secondaryButton")
+        help_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        help_button.clicked.connect(
+            lambda: QDesktopServices.openUrl(QUrl("https://moyrii-web-2026.vercel.app")))
+        help_row.add_control(help_button)
+        section.add_row(help_row)
+
+        for title,notice in (("문의 및 제안", "heamin0603@naver.com"),):
             row=SettingsRow(title)
             caption=localized_label(notice)
             caption.setObjectName("settingsRowCaption")
