@@ -2,9 +2,9 @@
 
 ## 빌드
 
-프로젝트의 가상 환경에서 `python scripts/build_dmg.py`를 실행한다. 검은 묘리 원본(`assets/characters/myorii_profile.png`)으로 ICNS를 만들고 PyInstaller로 Python·Qt·인증서·리소스를 포함한 앱을 빌드한다. `dist/Myorii-macOS-arm64.dmg`와 SHA-256 파일이 생성된다. Intel Mac에서는 해당 아키텍처의 Python과 의존성으로 별도 빌드하며 파일명은 x86_64가 된다. `dist/`의 중간 빌드 결과는 Git에 넣지 않는다. 배포할 DMG와 체크섬은 `releases/`에 복사해 버전 관리한다.
+프로젝트의 가상 환경에서 `python scripts/build_dmg.py`를 실행한다. 검은 묘리 원본(`assets/characters/myorii_profile.png`)으로 ICNS를 만들고 PyInstaller로 Python·Qt·인증서·리소스를 포함한 앱을 빌드한다. `dist/Myorii-v1.0-macOS-arm64.dmg`와 SHA-256 파일이 생성된다. Intel Mac에서는 해당 아키텍처의 Python과 의존성으로 별도 빌드하며 파일명은 x86_64가 된다. `dist/`의 중간 빌드 결과는 Git에 넣지 않는다. 배포할 DMG와 체크섬은 `releases/`에 복사해 버전 관리한다.
 
-DMG에는 Myorii.app, Applications 바로가기, 그림이 포함된 `설치 안내.pdf`가 들어간다. 웹 다운로드 링크로 배포할 수 있으며 로컬 추론용 서버를 운영할 필요는 없다. 현재 결과물은 ad-hoc 서명만 있는 배포본으로 Developer ID 서명·공증은 포함하지 않는다. Gatekeeper를 해제하거나 다운로드 격리 속성을 제거하는 동작은 없다. 다른 Mac의 첫 실행 허용은 사용자가 macOS 안내에 따라 결정해야 한다.
+DMG에는 Myorii.app, Applications 바로가기, `묘리 제거.app`, 그림이 포함된 `설치 및 삭제 안내.pdf`가 들어간다. 네이티브 제거 도구 빌드를 위해 Xcode Command Line Tools의 Swift 컴파일러가 필요하다. 웹 다운로드 링크로 배포할 수 있으며 로컬 추론용 서버를 운영할 필요는 없다. 현재 결과물은 ad-hoc 서명만 있는 배포본으로 Developer ID 서명·공증은 포함하지 않는다. Gatekeeper를 해제하거나 다운로드 격리 속성을 제거하는 동작은 없다. 다른 Mac의 첫 실행 허용은 사용자가 macOS 안내에 따라 결정해야 한다.
 
 ## 첫 실행
 
@@ -45,8 +45,18 @@ OS 27에서도 'macOS 14 이상 필요'가 나타난 원인은 동적으로 읽�
 
 ### 그림 설치 안내
 
-텍스트 안내를 2페이지 PDF로 교체했다. 사용자가 제공한 설치 창과 보안 설정 스크린샷 위에 벡터 화살표·강조 테두리·순서 번호를 표시한다. 원본 이미지는 `packaging/macos/guide-images/`, 생성 코드는 `scripts/build_install_guide.py`, 배포 PDF는 `output/pdf/Myorii-install-guide.pdf`에 둔다. PDF를 수정할 때는 reportlab이 있는 Python으로 생성 스크립트를 실행하고 두 페이지를 렌더링해 확인한 다음 DMG를 빌드한다. 일반 DMG 빌드는 저장된 PDF를 사용하므로 reportlab이 필요하지 않다.
+텍스트 안내를 그림 PDF로 교체했다. 현재는 설치·보안 승인·AI 준비·삭제를 다루는 4페이지다. 사용자가 제공한 설치 창과 보안 설정 스크린샷 위에 벡터 화살표·강조 테두리·순서 번호를 표시한다. 원본 이미지는 `packaging/macos/guide-images/`, 생성 코드는 `scripts/build_install_guide.py`, 배포 PDF는 `output/pdf/Myorii-install-guide.pdf`에 둔다. PDF를 수정할 때는 reportlab이 있는 Python으로 생성 스크립트를 실행하고 전체 페이지를 렌더링해 확인한 다음 DMG를 빌드한다. 일반 DMG 빌드는 저장된 PDF를 사용하므로 reportlab이 필요하지 않다.
 
 ## v1.0 배포
 
-기능 브랜치를 dev에 통합하고 dev → main PR을 병합한 뒤, main의 최종 배포 커밋에 `v1.0` 태그를 생성한다. dev에는 배포 태그를 달지 않는다. README의 DMG 링크는 이 태그의 파일을 가리켜 이후 개발 변경과 무관하게 같은 배포본을 내려받는다. 앱 설정에는 v1.0, macOS 번들에는 1.0.0을 표시한다. 서명·공증 및 별도 Mac 검증 범위는 위와 동일하다.
+기능 브랜치를 dev에 통합하고 dev → main PR을 병합한 뒤, main의 최종 배포 커밋에 `v1.0` 태그를 생성한다. dev에는 배포 태그를 달지 않는다. 최초 README는 이 태그의 파일을 가리켰다. 아래 수정본부터 현재 브랜치의 DMG를 연결하며, 최초 배포본은 기존 태그에서 계속 확인할 수 있다. 앱 설정에는 v1.0, macOS 번들에는 1.0.0을 표시한다. 서명·공증 및 별도 Mac 검증 범위는 위와 동일하다.
+
+## v1.0 설치·제거 안내 보강 (2026-10-15)
+
+사용자 요청에 따라 표시 버전은 v1.0을 유지한다. DMG 파일과 볼륨 이름에도 v1.0을 명시한다. 수정 빌드의 번들 버전은 2이며, 기존 v1.0 Git 태그는 이동하지 않는다. 새로운 파일은 `releases/Myorii-v1.0-macOS-arm64.dmg`에 둔다.
+
+설정의 도움말 버튼은 https://moyrii-web-2026.vercel.app 을 기본 브라우저로 연다. PDF에도 같은 링크를 넣었다. 로컬 AI 사용 시 Ollama 설치·실행 승인창에서 예/열기/허용을 선택해야 하는 점, API만 사용하는 경우 준비를 생략할 수 있는 점을 명시했다.
+
+제거 도구는 앱·DB를 함께 휴지통으로 옮기고 저장된 API 키를 정리한다. Ollama 앱과 전체 기본 모델은 각각 선택 사항이다. 세부 범위와 검증 방법은 [묘리 제거 도구](macos-removal.md)를 참고한다. DMG 빌드는 두 앱의 ad-hoc 서명과 읽기 전용 실행 검사를 통과해야 완료된다.
+
+최종 검증은 2026-10-16에 마쳤다. 회귀 테스트 89개와 제거 테스트 15개가 통과했다. DMG 내부 두 앱 서명, macOS 27.0.1 버전 조회, PDF 일치와 링크, 네이티브 제거 확인·취소, 최신 앱의 도움말 연결을 확인했다. 결과는 `tests/results/dmg-uninstaller-2026-10-16.json`에 기록한다. 사용자 앱·DB·모델·API 키는 삭제하지 않았다.

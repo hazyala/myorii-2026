@@ -1,0 +1,53 @@
+{
+  "completed": "2026-10-16",
+  "branch": "feat/macos-uninstaller-help",
+  "display_version": "v1.0",
+  "bundle_version": "2",
+  "host_macos": "27.0.1",
+  "architecture": "arm64",
+  "regression_tests": {
+    "passed": 89,
+    "command": "QT_QPA_PLATFORM=offscreen .venv/bin/python -m unittest discover -s tests -p 'test_*.py'"
+  },
+  "removal_tests": {
+    "passed": 15,
+    "includes": "14 isolated path/choice/error cases plus native macOS Trash roundtrip",
+    "real_user_apps_db_models_keychain_deleted": false
+  },
+  "native_ui": {
+    "optional_choices_default_off": true,
+    "running_myorii_blocks_removal": true,
+    "confirmation_lists_app_and_db": true,
+    "cancel_returns_without_removal": true,
+    "dmg_app_started": true,
+    "settings_version_v1_0": true,
+    "help_opened_in_default_safari": "https://moyrii-web-2026.vercel.app"
+  },
+  "pdf": {
+    "pages": 4,
+    "rendered_and_visually_reviewed": true,
+    "matches_dmg_copy": true,
+    "ollama_approval_instructions": true,
+    "removal_instructions": true,
+    "clickable_help_url": true
+  },
+  "package": {
+    "file": "releases/Myorii-v1.0-macOS-arm64.dmg",
+    "bytes": 56863658,
+    "sha256": "6b4fa96149a8dfb0a7eb43f7b4dee26fddfe030c3f55090de8a0e49006518661",
+    "hdiutil_verify": "passed",
+    "app_codesign_verify": "passed (ad-hoc)",
+    "uninstaller_codesign_verify": "passed (ad-hoc)",
+    "frozen_os_detection": {
+      "macos": "27.0.1",
+      "local_install_supported": true
+    }
+  },
+  "limitations": [
+    "Fresh-account Gatekeeper and administrator-owned installation not tested on a separate Mac",
+    "Real user Keychain entries intentionally not deleted during testing",
+    "Intel hardware not tested",
+    "Homebrew, custom model directories and other user accounts require separate removal"
+  ],
+  "publication": "Local branch only; existing v1.0 tag unchanged"
+}

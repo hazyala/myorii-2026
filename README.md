@@ -6,15 +6,19 @@ macOS 메뉴바에서 채팅, 할일, 메모를 여는 Python 데스크톱 컴�
 
 ## macOS v1.0 다운로드
 
-[그림으로 보는 설치 안내 PDF](output/pdf/Myorii-install-guide.pdf) - 드래그 설치와 최초 실행 허용을 화면으로 안내합니다. DMG에도 같은 PDF가 포함됩니다.
+[그림으로 보는 설치·삭제 안내 PDF](output/pdf/Myorii-install-guide.pdf) - 드래그 설치, 최초 실행 허용, Ollama 설치 승인과 데이터 삭제를 안내합니다. DMG에도 같은 PDF가 포함됩니다.
 
 2026-10-15 수정본: macOS 27에서 버전 확인 오류로 Ollama 설치가 차단되던 문제를 해결했습니다.
 
-**[묘리 DMG 다운로드 — Apple Silicon용, 약 52MB](https://github.com/hazyala/myorii-2026/raw/refs/tags/v1.0/releases/Myorii-macOS-arm64.dmg)** · [SHA-256 체크섬](releases/Myorii-macOS-arm64.dmg.sha256)
+**[묘리 DMG 다운로드 — Apple Silicon용, 약 57MB](releases/Myorii-v1.0-macOS-arm64.dmg?raw=true)** · [SHA-256 체크섬](releases/Myorii-v1.0-macOS-arm64.dmg.sha256)
 
 macOS 14 이상, Apple Silicon(M 시리즈)용입니다. DMG를 열고 Myorii를 Applications로 옮겨 실행하세요. 처음 실행하면 필요한 Ollama와 기본 Qwen 모델(약 3.3GB)을 내려받습니다. 기존 설치와 모델은 재사용합니다.
 
-이 파일은 `main`의 `v1.0` 배포본이며 Apple Developer ID 서명·공증은 없습니다. macOS가 실행을 차단하면 신뢰하는 배포처인지 확인한 뒤 시스템 설정 → 개인정보 보호 및 보안에서 실행 허용 여부를 결정해주세요. [설치·검증 범위 자세히 보기](docs/macos-distribution.md)
+이 파일은 현재 브랜치의 `v1.0` 수정 배포본이며 Apple Developer ID 서명·공증은 없습니다. macOS가 실행을 차단하면 신뢰하는 배포처인지 확인한 뒤 시스템 설정 → 개인정보 보호 및 보안에서 실행 허용 여부를 결정해주세요. [설치·검증 범위 자세히 보기](docs/macos-distribution.md)
+
+DMG에는 **묘리 제거** 도구도 포함됩니다. 묘리 앱과 대화·할일·메모 DB를 함께 휴지통으로 옮기며, Ollama 앱과 전체 기본 모델은 각각 선택한 경우에만 처리합니다. 묘리가 저장한 API 키도 정리합니다. [제거 범위와 방법](docs/macos-removal.md)
+
+표시 버전은 **v1.0**으로 유지하며 DMG 파일명에도 명시했습니다. 최초 배포의 `v1.0` Git 태그는 그대로 보존됩니다. 이 수정본은 해당 태그 이후 변경을 포함합니다.
 
 ## 앱 화면
 
