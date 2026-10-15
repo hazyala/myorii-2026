@@ -79,7 +79,7 @@ app = BUNDLE(
     info_plist={
         "CFBundleDisplayName": "Myorii",
         "CFBundleShortVersionString": "1.0.0",
-        "CFBundleVersion": "1",
+        "CFBundleVersion": "2",
         "LSMinimumSystemVersion": "14.0",
         "LSUIElement": True,
         "NSHighResolutionCapable": True,

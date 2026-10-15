@@ -12,7 +12,7 @@ TRANSLATIONS = {
 '로컬에 설치된 모델 중 기본으로 사용할 모델을 선택하세요.':'Choose a default from your installed local models.',
 '로컬 모델 추가, 삭제 및 정보를 확인할 수 있어요.':'Add, remove, and inspect local models.',
 'MCP · 커넥터 · 플러그인':'MCP · Connectors · Plugins','모델에 외부 도구와 서비스를 연결하는 기능은 향후 구현 예정입니다.':'Connecting external tools and services to models is planned for a future update.','도움말 사이트는 추후 구현 예정입니다.':'A help website is planned for a future update.','문의 및 제안':'Contact & Suggestions','연동':'Integrations','Notion 연동':'Connect Notion','할일 목록을 Notion과 연동할 수 있어요.':'Connect your tasks to Notion.','연동하기':'Connect',
-'정보':'About','버전':'Version','도움말':'Help','피드백 보내기':'Send feedback','피드백':'Feedback','앱 종료':'Quit Myorii',
+'도움말 사이트 열기':'Open help website','정보':'About','버전':'Version','도움말':'Help','피드백 보내기':'Send feedback','피드백':'Feedback','앱 종료':'Quit Myorii',
 '오늘':'Today','+ 할일 추가':'+ Add task','할 일을 입력하세요...':'Enter a task...', '할 일 삭제':'Delete task',
 '새로운 메모':'New note','내 메모 {count}':'My notes {count}', '내 메모 0':'My notes 0',
 '저장됨':'Saved','저장 중...':'Saving...', 'Markdown으로 메모를 작성하세요...':'Write a note in Markdown...',
