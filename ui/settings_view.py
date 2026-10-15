@@ -298,7 +298,7 @@ class SettingsView(QWidget):
         section = SettingsSection("정보", "info.png")
 
         version = SettingsRow("버전")
-        version_value = QLabel("v0.1.0 (Beta)")
+        version_value = QLabel("v1.0")
         version_value.setObjectName("versionLabel")
         version.add_control(version_value)
         section.add_row(version)

@@ -2,9 +2,9 @@
 
 ## 빌드
 
-프로젝트의 가상 환경에서 `python scripts/build_dmg.py`를 실행한다. 검은 묘리 원본(`assets/characters/myorii_profile.png`)으로 ICNS를 만들고 PyInstaller로 Python·Qt·인증서·리소스를 포함한 앱을 빌드한다. `dist/Myorii-macOS-arm64.dmg`와 SHA-256 파일이 생성된다. Intel Mac에서는 해당 아키텍처의 Python과 의존성으로 별도 빌드하며 파일명은 x86_64가 된다. 빌드 결과는 Git에 넣지 않는다.
+프로젝트의 가상 환경에서 `python scripts/build_dmg.py`를 실행한다. 검은 묘리 원본(`assets/characters/myorii_profile.png`)으로 ICNS를 만들고 PyInstaller로 Python·Qt·인증서·리소스를 포함한 앱을 빌드한다. `dist/Myorii-macOS-arm64.dmg`와 SHA-256 파일이 생성된다. Intel Mac에서는 해당 아키텍처의 Python과 의존성으로 별도 빌드하며 파일명은 x86_64가 된다. `dist/`의 중간 빌드 결과는 Git에 넣지 않는다. 배포할 DMG와 체크섬은 `releases/`에 복사해 버전 관리한다.
 
-DMG에는 Myorii.app, Applications 바로가기, 그림이 포함된 `설치 안내.pdf`가 들어간다. 웹 다운로드 링크로 배포할 수 있으며 로컬 추론용 서버를 운영할 필요는 없다. 현재 결과물은 ad-hoc 서명만 있는 테스트 배포본으로 Developer ID 서명·공증은 포함하지 않는다. Gatekeeper를 해제하거나 다운로드 격리 속성을 제거하는 동작은 없다. 다른 Mac의 첫 실행 허용은 사용자가 macOS 안내에 따라 결정해야 한다.
+DMG에는 Myorii.app, Applications 바로가기, 그림이 포함된 `설치 안내.pdf`가 들어간다. 웹 다운로드 링크로 배포할 수 있으며 로컬 추론용 서버를 운영할 필요는 없다. 현재 결과물은 ad-hoc 서명만 있는 배포본으로 Developer ID 서명·공증은 포함하지 않는다. Gatekeeper를 해제하거나 다운로드 격리 속성을 제거하는 동작은 없다. 다른 Mac의 첫 실행 허용은 사용자가 macOS 안내에 따라 결정해야 한다.
 
 ## 첫 실행
 
@@ -46,3 +46,7 @@ OS 27에서도 'macOS 14 이상 필요'가 나타난 원인은 동적으로 읽�
 ### 그림 설치 안내
 
 텍스트 안내를 2페이지 PDF로 교체했다. 사용자가 제공한 설치 창과 보안 설정 스크린샷 위에 벡터 화살표·강조 테두리·순서 번호를 표시한다. 원본 이미지는 `packaging/macos/guide-images/`, 생성 코드는 `scripts/build_install_guide.py`, 배포 PDF는 `output/pdf/Myorii-install-guide.pdf`에 둔다. PDF를 수정할 때는 reportlab이 있는 Python으로 생성 스크립트를 실행하고 두 페이지를 렌더링해 확인한 다음 DMG를 빌드한다. 일반 DMG 빌드는 저장된 PDF를 사용하므로 reportlab이 필요하지 않다.
+
+## v1.0 배포
+
+기능 브랜치를 dev에 통합하고 dev → main PR을 병합한 뒤, main의 최종 배포 커밋에 `v1.0` 태그를 생성한다. dev에는 배포 태그를 달지 않는다. README의 DMG 링크는 이 태그의 파일을 가리켜 이후 개발 변경과 무관하게 같은 배포본을 내려받는다. 앱 설정에는 v1.0, macOS 번들에는 1.0.0을 표시한다. 서명·공증 및 별도 Mac 검증 범위는 위와 동일하다.

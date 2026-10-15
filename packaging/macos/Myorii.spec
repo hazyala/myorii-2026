@@ -78,7 +78,7 @@ app = BUNDLE(
     bundle_identifier="app.myorii.desktop",
     info_plist={
         "CFBundleDisplayName": "Myorii",
-        "CFBundleShortVersionString": "0.1.0",
+        "CFBundleShortVersionString": "1.0.0",
         "CFBundleVersion": "1",
         "LSMinimumSystemVersion": "14.0",
         "LSUIElement": True,

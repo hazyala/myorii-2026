@@ -2,17 +2,17 @@
 
 macOS 메뉴바에서 채팅, 할일, 메모를 여는 Python 데스크톱 컴패니언.
 
-## macOS 테스트 버전 다운로드
+## macOS v1.0 다운로드
 
 [그림으로 보는 설치 안내 PDF](output/pdf/Myorii-install-guide.pdf) - 드래그 설치와 최초 실행 허용을 화면으로 안내합니다. DMG에도 같은 PDF가 포함됩니다.
 
 2026-10-15 수정본: macOS 27에서 버전 확인 오류로 Ollama 설치가 차단되던 문제를 해결했습니다.
 
-**[묘리 DMG 다운로드 — Apple Silicon용, 약 52MB](https://github.com/hazyala/myorii-2026/raw/refs/heads/feat/dmg-first-run-setup/releases/Myorii-macOS-arm64.dmg?v=20261015-pdf-guide)** · [SHA-256 체크섬](releases/Myorii-macOS-arm64.dmg.sha256)
+**[묘리 DMG 다운로드 — Apple Silicon용, 약 52MB](https://github.com/hazyala/myorii-2026/raw/refs/tags/v1.0/releases/Myorii-macOS-arm64.dmg)** · [SHA-256 체크섬](releases/Myorii-macOS-arm64.dmg.sha256)
 
 macOS 14 이상, Apple Silicon(M 시리즈)용입니다. DMG를 열고 Myorii를 Applications로 옮겨 실행하세요. 처음 실행하면 필요한 Ollama와 기본 Qwen 모델(약 3.3GB)을 내려받습니다. 기존 설치와 모델은 재사용합니다.
 
-이 파일은 `feat/dmg-first-run-setup` 브랜치의 테스트 배포본이며 Apple Developer ID 서명·공증은 없습니다. macOS가 실행을 차단하면 신뢰하는 배포처인지 확인한 뒤 시스템 설정 → 개인정보 보호 및 보안에서 실행 허용 여부를 결정해주세요. [설치·검증 범위 자세히 보기](docs/macos-distribution.md)
+이 파일은 `main`의 `v1.0` 배포본이며 Apple Developer ID 서명·공증은 없습니다. macOS가 실행을 차단하면 신뢰하는 배포처인지 확인한 뒤 시스템 설정 → 개인정보 보호 및 보안에서 실행 허용 여부를 결정해주세요. [설치·검증 범위 자세히 보기](docs/macos-distribution.md)
 
 ## 앱 화면
 
@@ -30,7 +30,7 @@ macOS 14 이상, Apple Silicon(M 시리즈)용입니다. DMG를 열고 Myorii를
 
 작업 중 작은 팝오버에서 모델에 질문하고, 답변의 코드나 이름을 복사하고, 필요한 내용을 메모로 남긴다. 대화 모델은 Ollama 또는 OpenAI·Gemini·Anthropic API 중 선택한다. 할일과 메모는 SQLite에 저장하며 채팅에서도 추가·조회·수정·삭제할 수 있다.
 
-이 README는 실행 코드가 있는 `dev` 기준이다. `main`은 소개 문서만 있는 브랜치이며 Windows 실행기는 아직 구현하지 않았다.
+`main`에는 배포 코드와 설치 파일을, `dev`에는 다음 버전의 개발 코드를 유지한다. `v1.0` 태그는 main의 배포 커밋을 가리킨다. Windows 실행기는 아직 구현하지 않았다.
 
 - `QSystemTrayIcon` 클릭으로 창을 열고 닫는다. `QLockFile`로 중복 실행을 막는다.
 - 워커 thread가 응답을 받아 Qt signal로 화면에 전달한다. 네이밍·코드 등 일부 응답은 포맷 정리를 위해 버퍼링한다.
