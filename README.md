@@ -2,6 +2,14 @@
 
 macOS 메뉴바에서 채팅, 할일, 메모를 여는 Python 데스크톱 컴패니언.
 
+## macOS 테스트 버전 다운로드
+
+**[묘리 DMG 다운로드 — Apple Silicon용, 약 52MB](https://github.com/hazyala/myorii-2026/raw/refs/heads/feat/dmg-first-run-setup/releases/Myorii-macOS-arm64.dmg)** · [SHA-256 체크섬](releases/Myorii-macOS-arm64.dmg.sha256)
+
+macOS 14 이상, Apple Silicon(M 시리즈)용입니다. DMG를 열고 Myorii를 Applications로 옮겨 실행하세요. 처음 실행하면 필요한 Ollama와 기본 Qwen 모델(약 3.3GB)을 내려받습니다. 기존 설치와 모델은 재사용합니다.
+
+이 파일은 `feat/dmg-first-run-setup` 브랜치의 테스트 배포본이며 Apple Developer ID 서명·공증은 없습니다. macOS가 실행을 차단하면 신뢰하는 배포처인지 확인한 뒤 시스템 설정 → 개인정보 보호 및 보안에서 실행 허용 여부를 결정해주세요. [설치·검증 범위 자세히 보기](docs/macos-distribution.md)
+
 ## 앱 화면
 
 발표자료 `Design_System.pptx`에 수록된 Myorii 화면입니다. 채팅의 코드블록 답변, 오늘의 할 일, 메모 목록과 편집 화면을 보여줍니다.
