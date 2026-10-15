@@ -53,3 +53,7 @@ API 키는 `model_store`가 `keyring.backends.macOS.Keyring`으로 읽고 쓴다
 ## 코드 근거
 
 [main.py](../main.py) · [ChatWorker](../ui/chat_worker.py) · [ChatService](../core/llm/chat_service.py) · [ChatTools](../core/tools/chat_tools.py) · [database](../storage/database.py) · [model_store](../storage/model_store.py)
+
+### 첫 실행 로컬 AI 준비
+
+`main.py`는 DB 초기화와 단일 실행 잠금 뒤 선택 모델의 준비 상태를 확인한다. 미준비 상태에서는 `ui/setup_dialog.py`가 `QThread`에서 `core/setup/local_setup.py`를 실행한다. 단계·바이트 진행률·오류를 신호로 전달하며 메인 창은 준비 완료 또는 명시적 건너뛰기 이후 생성한다. 준비 코드는 기존 서버 재사용, 공식 배포 앱 서명 확인·사용자 영역 설치, 모델 pull과 로딩 확인을 담당한다. HTTPS 루트 인증서는 certifi로 앱에 포함한다. 상세 배포 절차는 `macos-distribution.md`에 기록한다.

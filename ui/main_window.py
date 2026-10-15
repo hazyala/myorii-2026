@@ -228,8 +228,12 @@ class MainWindow(QMainWindow):
             self._hide_window()
             return
 
-        self.move(self._position_for(icon_geometry))
+        position = self._position_for(icon_geometry)
+        self.move(position)
         self.show()
+        # Cocoa may adjust a newly created native window during its first show.
+        # Apply the anchor again after native creation, as on subsequent opens.
+        self.move(position)
         self.raise_()
 
     def _build_window(self) -> QWidget:

@@ -6,3 +6,4 @@ pdfminer.six>=20231228
 pyobjc-core>=10.0
 pyobjc-framework-Cocoa>=10.0
 keyring>=25,<26
+certifi>=2024.7.4

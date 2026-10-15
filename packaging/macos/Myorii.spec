@@ -74,10 +74,13 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name="Myorii.app",
-    icon=None,
+    icon=os.path.join(project_root, "build", "Myorii.icns"),
     bundle_identifier="app.myorii.desktop",
     info_plist={
         "CFBundleDisplayName": "Myorii",
+        "CFBundleShortVersionString": "1.0.0",
+        "CFBundleVersion": "1",
+        "LSMinimumSystemVersion": "14.0",
         "LSUIElement": True,
         "NSHighResolutionCapable": True,
     },

@@ -32,3 +32,6 @@ dist/
 
 # PyQt
 *.qrc
+
+# PDF rendering intermediates
+tmp/pdfs/
