@@ -1,5 +1,6 @@
 """Build an architecture-specific, ad-hoc signed test DMG on macOS."""
 import hashlib
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -26,6 +27,13 @@ def main():
     run(sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean', 'packaging/macos/Myorii.spec')
     app = ROOT / 'dist/Myorii.app'
     run('codesign', '--verify', '--deep', '--strict', str(app))
+    # Exercise OS detection inside the frozen app, not the development Python.
+    report = json.loads(subprocess.check_output(
+        [str(app / 'Contents/MacOS/Myorii'), '--check-install-environment'], text=True))
+    actual = subprocess.check_output(['/usr/bin/sw_vers', '-productVersion'], text=True).strip()
+    if report['macos'] != actual or not report['local_install_supported']:
+        raise RuntimeError(f'Frozen app OS detection failed: {report}, actual={actual}')
+    print('Frozen app installation environment:', report)
     arch = subprocess.check_output(['uname', '-m'], text=True).strip()
     dmg = ROOT / f'dist/Myorii-macOS-{arch}.dmg'
     with tempfile.TemporaryDirectory(prefix='myorii-dmg-') as folder:

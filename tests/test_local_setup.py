@@ -79,7 +79,7 @@ class SetupTests(unittest.TestCase):
         import io
         response = io.BytesIO(b'dmg')
         response.headers = {'Content-Length': '3'}
-        with tempfile.TemporaryDirectory() as folder, patch('core.setup.local_setup.Path.home', return_value=Path(folder)), patch('core.setup.local_setup.platform.mac_ver', return_value=('14.0', '', '')), patch('core.setup.local_setup.urlopen', return_value=response), patch('core.setup.local_setup.shutil.disk_usage', return_value=Mock(free=10**11)), patch('core.setup.local_setup.subprocess.run') as cleanup:
+        with tempfile.TemporaryDirectory() as folder, patch('core.setup.local_setup.Path.home', return_value=Path(folder)), patch('core.setup.local_setup.macos_version', return_value=(14, 0)), patch('core.setup.local_setup.urlopen', return_value=response), patch('core.setup.local_setup.shutil.disk_usage', return_value=Mock(free=10**11)), patch('core.setup.local_setup.subprocess.run') as cleanup:
             s = LocalSetup(Mock())
             s.command = Mock(side_effect=[b'', RuntimeError('bad signature')])
             with self.assertRaisesRegex(RuntimeError, 'signature'):
@@ -135,3 +135,30 @@ class SetupDialogTests(unittest.TestCase):
         self.assertFalse(d.cancel.isEnabled())
         d.worker = None
         d.close()
+
+
+class MacOSVersionTests(unittest.TestCase):
+    def test_supported_versions_including_27(self):
+        from core.setup.local_setup import check_macos_support
+        from unittest.mock import mock_open
+        for value in ('14.0', '15.7', '26.1', '27.0.1'):
+            with patch('builtins.open', mock_open()), patch('core.setup.local_setup.plistlib.load', return_value={'ProductVersion': value}):
+                self.assertEqual(check_macos_support()[0], int(value.split('.')[0]))
+
+    def test_real_old_version_explains_detected_version(self):
+        from core.setup.local_setup import check_macos_support
+        with patch('core.setup.local_setup.macos_version', return_value=(13, 7)):
+            with self.assertRaisesRegex(RuntimeError, '현재 macOS 13.7'):
+                check_macos_support()
+
+    def test_unreadable_plist_falls_back_to_system_command(self):
+        from core.setup.local_setup import macos_version
+        with patch('builtins.open', side_effect=OSError), patch('core.setup.local_setup.subprocess.run', return_value=Mock(stdout='27.0.1\n')) as run:
+            self.assertEqual(macos_version(), (27, 0, 1))
+            self.assertEqual(run.call_args.kwargs['env']['SYSTEM_VERSION_COMPAT'], '0')
+
+    def test_unknown_version_does_not_claim_old_os(self):
+        from core.setup.local_setup import check_macos_support
+        with patch('builtins.open', side_effect=OSError), patch('core.setup.local_setup.subprocess.run', return_value=Mock(stdout='')):
+            with self.assertRaisesRegex(RuntimeError, '버전을 확인하지 못'):
+                check_macos_support()

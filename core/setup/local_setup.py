@@ -3,7 +3,9 @@ import json
 import ssl
 import certifi
 from pathlib import Path
-import platform
+import os
+import plistlib
+import re
 import shutil
 import subprocess
 import tempfile
@@ -14,6 +16,44 @@ from urllib.request import Request, urlopen
 DEFAULT_MODEL = 'qwen3-vl:4b-instruct'
 OLLAMA_URL = 'https://ollama.com/download/Ollama.dmg'
 OLLAMA_REQUIREMENT = '=anchor apple generic and certificate leaf[subject.OU] = "3MU9H2V9Y9"'
+
+
+def macos_version():
+    """Read the product version explicitly so PyInstaller collects plistlib.
+
+    The project's dynamically loaded stdlib platform module can hide imports
+    from the freezer. Never interpret a failed version lookup as macOS 0.
+    """
+    def parse(value):
+        if isinstance(value, str) and re.fullmatch(r"[0-9]+(?:\.[0-9]+){0,2}", value.strip()):
+            return tuple(int(part) for part in value.strip().split('.'))
+        return None
+
+    try:
+        with open('/System/Library/CoreServices/SystemVersion.plist', 'rb') as source:
+            version = parse(plistlib.load(source).get('ProductVersion'))
+            if version:
+                return version
+    except (OSError, ValueError, TypeError, AttributeError):
+        pass
+    try:
+        result = subprocess.run(['/usr/bin/sw_vers', '-productVersion'], capture_output=True,
+                                text=True, check=True, timeout=5,
+                                env={**os.environ, 'SYSTEM_VERSION_COMPAT': '0'})
+        version = parse(result.stdout)
+        if version:
+            return version
+    except (OSError, subprocess.SubprocessError):
+        pass
+    raise RuntimeError('macOS 버전을 확인하지 못했습니다. 앱을 다시 실행하고 재시도해주세요.')
+
+
+def check_macos_support():
+    version = macos_version()
+    if version[0] < 14:
+        label = '.'.join(map(str, version))
+        raise RuntimeError(f'현재 macOS {label}입니다. 로컬 모델 설치에는 macOS 14 이상이 필요합니다. API 모드를 이용할 수 있습니다.')
+    return version
 
 
 class Cancelled(Exception):
@@ -74,8 +114,7 @@ class LocalSetup:
         return None
 
     def install(self):
-        if int(platform.mac_ver()[0].split('.')[0] or 0) < 14:
-            raise RuntimeError('로컬 모델 설치에는 macOS 14 이상이 필요합니다. API 모드를 이용할 수 있습니다.')
+        check_macos_support()
         destination = Path.home() / 'Applications/Ollama.app'
         destination.parent.mkdir(parents=True, exist_ok=True)
         if destination.exists():

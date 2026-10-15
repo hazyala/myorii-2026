@@ -1,13 +1,13 @@
 {
   "date": "2026-10-15",
   "architecture": "arm64",
-  "unit_tests": 85,
+  "unit_tests": 89,
   "official_ollama_download_install": "passed: isolated temporary directory, codesign publisher requirement and CLI execution",
   "fresh_model_download": "passed: isolated server port 11439, empty temporary model store, qwen3-vl:4b-instruct pull and load",
   "existing_model_reuse": "passed",
   "native_ui": "setup dialog layout and actual chat from app copied out of DMG passed",
-  "dmg_bytes": 54458666,
-  "sha256": "d171f8f6951e61f0650c13753bca077f9c002ab520fe3be5414c1607e2ed5866",
+  "dmg_bytes": 54131625,
+  "sha256": "dd00eede784542b2504ad3fe25d47ce850155ac6a232c1d57a369a99093a91fd",
   "limitations": [
     "No clean separate Mac / Gatekeeper first-run test",
     "No Intel hardware test",
@@ -42,5 +42,9 @@
       29
     ]
   },
-  "first_show_fix": "Wait for valid stable status item geometry; reapply anchor after native show; original translucent appearance restored"
+  "first_show_fix": "Wait for valid stable status item geometry; reapply anchor after native show; original translucent appearance restored",
+  "frozen_os_check": {
+    "macos": "27.0.1",
+    "local_install_supported": true
+  }
 }

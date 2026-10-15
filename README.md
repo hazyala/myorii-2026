@@ -4,7 +4,9 @@ macOS 메뉴바에서 채팅, 할일, 메모를 여는 Python 데스크톱 컴�
 
 ## macOS 테스트 버전 다운로드
 
-**[묘리 DMG 다운로드 — Apple Silicon용, 약 52MB](https://github.com/hazyala/myorii-2026/raw/refs/heads/feat/dmg-first-run-setup/releases/Myorii-macOS-arm64.dmg)** · [SHA-256 체크섬](releases/Myorii-macOS-arm64.dmg.sha256)
+2026-10-15 수정본: macOS 27에서 버전 확인 오류로 Ollama 설치가 차단되던 문제를 해결했습니다.
+
+**[묘리 DMG 다운로드 — Apple Silicon용, 약 52MB](https://github.com/hazyala/myorii-2026/raw/refs/heads/feat/dmg-first-run-setup/releases/Myorii-macOS-arm64.dmg?v=20261015-os27)** · [SHA-256 체크섬](releases/Myorii-macOS-arm64.dmg.sha256)
 
 macOS 14 이상, Apple Silicon(M 시리즈)용입니다. DMG를 열고 Myorii를 Applications로 옮겨 실행하세요. 처음 실행하면 필요한 Ollama와 기본 Qwen 모델(약 3.3GB)을 내려받습니다. 기존 설치와 모델은 재사용합니다.
 

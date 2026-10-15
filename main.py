@@ -18,6 +18,13 @@ from storage import database
 
 
 def main() -> int:
+    if sys.argv[1:] == ['--check-install-environment']:
+        import json
+        from core.setup.local_setup import macos_version
+        version = macos_version()
+        print(json.dumps({'macos': '.'.join(map(str, version)),
+                          'local_install_supported': version[0] >= 14}))
+        return 0
     app = QApplication(sys.argv)
     app.setApplicationName("Myorii")
     app.setQuitOnLastWindowClosed(False)
