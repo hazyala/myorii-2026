@@ -49,5 +49,5 @@
     "Intel hardware not tested",
     "Homebrew, custom model directories and other user accounts require separate removal"
   ],
-  "publication": "Local branch only; existing v1.0 tag unchanged"
+  "publication": "Download URLs target main; existing v1.0 tag unchanged"
 }
