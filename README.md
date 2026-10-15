@@ -1,5 +1,7 @@
 # Myorii
 
+**[🌐 묘리 소개·다운로드 웹사이트](https://moyrii-web-2026.vercel.app/)** · [웹사이트 전용 저장소](https://github.com/hazyala/moyrii-web-2026)
+
 macOS 메뉴바에서 채팅, 할일, 메모를 여는 Python 데스크톱 컴패니언.
 
 ## macOS v1.0 다운로드
