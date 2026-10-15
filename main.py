@@ -4,8 +4,13 @@ from __future__ import annotations
 
 import sys
 
-from PyQt6.QtCore import QLockFile, QStandardPaths
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtCore import QLockFile, QStandardPaths, QTimer
+from PyQt6.QtWidgets import QApplication, QDialog
+from PyQt6.QtGui import QIcon
+from core.paths import resource_path
+from storage import model_store
+from ui.setup_dialog import SetupDialog
+from core.setup.local_setup import LocalSetup
 
 from platform.macos.menubar import MacMenuBar
 from ui.main_window import MainWindow
@@ -25,9 +30,20 @@ def main() -> int:
     
     database.initialize()
 
+    app.setWindowIcon(QIcon(str(resource_path('assets', 'characters', 'myorii_profile.png'))))
+    config = model_store.load()
+    if config['provider'] == 'ollama':
+        model = config['models']['ollama']
+        # Fast probe only; all downloads and model loading run in the dialog worker.
+        setup = LocalSetup(lambda *args: None, model=model)
+        if not setup.has_model(setup.available()):
+            if SetupDialog(model).exec() != QDialog.DialogCode.Accepted:
+                return 0
+
     window = MainWindow()
     menu_bar = MacMenuBar(window)
     menu_bar.show()
+    QTimer.singleShot(0, menu_bar.toggle_window)
 
     app.setProperty("myorii_lock", app_lock)
     app.setProperty("myorii_window", window)
