@@ -1,0 +1,45 @@
+"""Build an architecture-specific, ad-hoc signed test DMG on macOS."""
+import hashlib
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def run(*args):
+    subprocess.run(args, check=True, cwd=ROOT)
+
+
+def main():
+    iconset = ROOT / 'build/Myorii.iconset'
+    iconset.mkdir(parents=True, exist_ok=True)
+    # Preserve existing artwork; only resize for native icon representations.
+    for size in (16, 32, 128, 256, 512):
+        for scale in (1, 2):
+            name = f'icon_{size}x{size}' + ('@2x' if scale == 2 else '') + '.png'
+            run('sips', '-z', str(size * scale), str(size * scale),
+                str(ROOT / 'assets/characters/myorii_profile.png'), '--out', str(iconset / name))
+    run('iconutil', '-c', 'icns', str(iconset), '-o', str(ROOT / 'build/Myorii.icns'))
+    run(sys.executable, '-m', 'PyInstaller', '--noconfirm', '--clean', 'packaging/macos/Myorii.spec')
+    app = ROOT / 'dist/Myorii.app'
+    run('codesign', '--verify', '--deep', '--strict', str(app))
+    arch = subprocess.check_output(['uname', '-m'], text=True).strip()
+    dmg = ROOT / f'dist/Myorii-macOS-{arch}.dmg'
+    with tempfile.TemporaryDirectory(prefix='myorii-dmg-') as folder:
+        stage = Path(folder)
+        run('ditto', str(app), str(stage / app.name))
+        (stage / 'Applications').symlink_to('/Applications')
+        shutil.copyfile(ROOT / 'packaging/macos/INSTALL.txt', stage / '설치 안내.txt')
+        run('hdiutil', 'create', '-volname', 'Myorii', '-srcfolder', str(stage),
+            '-ov', '-format', 'UDZO', str(dmg))
+    run('hdiutil', 'verify', str(dmg))
+    digest = hashlib.file_digest(dmg.open('rb'), 'sha256').hexdigest()
+    dmg.with_suffix('.dmg.sha256').write_text(f'{digest}  {dmg.name}\n')
+    print(dmg)
+
+
+if __name__ == '__main__':
+    main()

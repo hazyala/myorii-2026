@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-15",
+  "architecture": "arm64",
+  "unit_tests": 81,
+  "official_ollama_download_install": "passed: isolated temporary directory, codesign publisher requirement and CLI execution",
+  "fresh_model_download": "passed: isolated server port 11439, empty temporary model store, qwen3-vl:4b-instruct pull and load",
+  "existing_model_reuse": "passed",
+  "native_ui": "setup dialog layout and actual chat from app copied out of DMG passed",
+  "dmg_bytes": 54216969,
+  "sha256": "eee0c4d977969342bef94e83f21baa15b36bd34e357e06e49e2966690acbdeae",
+  "limitations": [
+    "No clean separate Mac / Gatekeeper first-run test",
+    "No Intel hardware test",
+    "No Developer ID signature or notarization"
+  ]
+}

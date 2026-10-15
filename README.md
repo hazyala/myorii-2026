@@ -98,3 +98,7 @@ DB는 `~/Library/Application Support/Myorii/myorii.db`에 생성된다. 대화·
 PDF OCR, 오피스 서식·차트 해석, 전체 스프레드시트 계산은 구현 범위가 아니다. 시작 시 자동 실행 스위치는 UI만 있다. Windows, 동기화, 외부 도구 연결의 계획은 [기존 로드맵](docs/roadmap.md)에 따로 남겨 둔다.
 
 [사용 예와 첨부 범위](docs/USAGE.md) · [수동 테스트](docs/manual-test-cases.md) · [개발 규칙](docs/development-rule.md)
+
+## macOS 설치 파일
+
+`python scripts/build_dmg.py`로 현재 Mac 아키텍처용 DMG를 만든다. 검은 묘리 아이콘과 Python 실행 환경을 포함한다. 첫 실행 시 필요한 Ollama·Qwen 모델을 준비 화면에서 다운로드하고, 기존 설치와 모델은 재사용한다. API 사용자는 로컬 준비를 건너뛸 수 있다. 상세 설치 흐름·검증 범위·서명 상태는 [macOS 배포 안내](docs/macos-distribution.md)를 참고한다.
