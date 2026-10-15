@@ -21,6 +21,7 @@ from PyQt6.QtGui import (
 )
 from PyQt6.QtWidgets import (
     QFrame,
+    QGraphicsDropShadowEffect,
     QHBoxLayout,
     QLabel,
     QMainWindow,
@@ -94,7 +95,7 @@ class PopoverSurface(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
         path = self._surface_path()
-        painter.fillPath(path, QColor(24, 30, 40) if preferences.theme() == "dark" else QColor(255, 255, 255))
+        painter.fillPath(path, QColor(24, 30, 40, 248) if preferences.theme() == "dark" else QColor(255, 255, 255, 242))
         painter.setPen(QColor(226, 231, 239, 150))
         painter.drawPath(path)
 
@@ -227,15 +228,21 @@ class MainWindow(QMainWindow):
             self._hide_window()
             return
 
-        self.move(self._position_for(icon_geometry))
+        position = self._position_for(icon_geometry)
+        self.move(position)
         self.show()
+        # Cocoa may adjust a newly created native window during its first show.
+        # Apply the anchor again after native creation, as on subsequent opens.
+        self.move(position)
         self.raise_()
 
     def _build_window(self) -> QWidget:
         root = PopoverSurface()
-        # Keep the body opaque from the first paint. A graphics effect on the
-        # entire translucent widget tree creates an offscreen backing texture
-        # that can expose rectangular artifacts during the first Cocoa show.
+        shadow = QGraphicsDropShadowEffect(root)
+        shadow.setBlurRadius(30)
+        shadow.setOffset(0, 14)
+        shadow.setColor(QColor(45, 57, 80, 38))
+        root.setGraphicsEffect(shadow)
 
         layout = QVBoxLayout(root)
         layout.setContentsMargins(14, 32, 14, 14)
@@ -440,6 +447,7 @@ class MainWindow(QMainWindow):
 
     def showEvent(self, event) -> None:  # noqa: N802
         super().showEvent(event)
+        self.setStyleSheet(preferences.stylesheet(STYLE_SHEET))
         self._keep_open_on_deactivate()
 
     def _keep_open_on_deactivate(self) -> None:

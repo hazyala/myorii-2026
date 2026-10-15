@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import sys
 
-from PyQt6.QtCore import QLockFile, QStandardPaths, QTimer
+from PyQt6.QtCore import QLockFile, QStandardPaths
 from PyQt6.QtWidgets import QApplication, QDialog
 from PyQt6.QtGui import QIcon
 from core.paths import resource_path
@@ -43,7 +43,7 @@ def main() -> int:
     window = MainWindow()
     menu_bar = MacMenuBar(window)
     menu_bar.show()
-    QTimer.singleShot(0, menu_bar.toggle_window)
+    menu_bar.show_initial_window()
 
     app.setProperty("myorii_lock", app_lock)
     app.setProperty("myorii_window", window)

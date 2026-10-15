@@ -1,17 +1,46 @@
 {
   "date": "2026-10-15",
   "architecture": "arm64",
-  "unit_tests": 82,
+  "unit_tests": 85,
   "official_ollama_download_install": "passed: isolated temporary directory, codesign publisher requirement and CLI execution",
   "fresh_model_download": "passed: isolated server port 11439, empty temporary model store, qwen3-vl:4b-instruct pull and load",
   "existing_model_reuse": "passed",
   "native_ui": "setup dialog layout and actual chat from app copied out of DMG passed",
-  "dmg_bytes": 54218415,
-  "sha256": "02d25d01d1f02ec4b885b8a1874d511f34861ceab7581734867e23e5fd0b312e",
+  "dmg_bytes": 54458666,
+  "sha256": "d171f8f6951e61f0650c13753bca077f9c002ab520fe3be5414c1607e2ed5866",
   "limitations": [
     "No clean separate Mac / Gatekeeper first-run test",
     "No Intel hardware test",
     "No Developer ID signature or notarization"
   ],
-  "first_show_fix": "Opaque body, transparent corners, no root graphics effect; first/reopened frame equality for light/dark and native DMG first-launch screen verified"
+  "first_show_position": {
+    "success": true,
+    "first_show": [
+      {
+        "icon": [
+          990,
+          0,
+          38,
+          29
+        ],
+        "window": [
+          793,
+          41,
+          430,
+          610
+        ],
+        "expected": [
+          793,
+          41
+        ]
+      }
+    ],
+    "final_icon": [
+      990,
+      0,
+      38,
+      29
+    ]
+  },
+  "first_show_fix": "Wait for valid stable status item geometry; reapply anchor after native show; original translucent appearance restored"
 }
