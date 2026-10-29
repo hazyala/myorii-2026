@@ -87,6 +87,31 @@ class PopoverSurface(QWidget):
     def __init__(self) -> None:
         super().__init__()
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self._drag_offset = None
+
+    def mousePressEvent(self, event) -> None:  # noqa: N802
+        point = event.position()
+        center = self.width() / 2
+        if (event.button() == Qt.MouseButton.LeftButton and 0 <= point.y() <= self.SURFACE_TOP
+                and abs(point.x() - center) <= self.NOTCH_WIDTH / 2):
+            self._drag_offset = event.globalPosition().toPoint() - self.window().pos()
+            event.accept()
+            return
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event) -> None:  # noqa: N802
+        if self._drag_offset is not None and event.buttons() & Qt.MouseButton.LeftButton:
+            self.window().move(event.globalPosition().toPoint() - self._drag_offset)
+            event.accept()
+            return
+        super().mouseMoveEvent(event)
+
+    def mouseReleaseEvent(self, event) -> None:  # noqa: N802
+        if event.button() == Qt.MouseButton.LeftButton and self._drag_offset is not None:
+            self._drag_offset = None
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
 
     def paintEvent(self, event) -> None:  # noqa: N802
         del event

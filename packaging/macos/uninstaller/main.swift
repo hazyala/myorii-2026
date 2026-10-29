@@ -30,7 +30,11 @@ func checkStopped(ollama: Bool) throws {
     let lock = FileManager.default.temporaryDirectory.appendingPathComponent("myorii.lock")
     if let value = try? String(contentsOf: lock, encoding: .utf8),
        let pid = Int32(value.components(separatedBy: .newlines).first ?? ""), pid > 0,
-       kill(pid, 0) == 0 || errno == EPERM {
+       (kill(pid, 0) == 0 || errno == EPERM),
+       let name = value.components(separatedBy: .newlines).dropFirst().first,
+       !name.isEmpty,
+       let processName = try? command("/bin/ps", ["-p", String(pid), "-o", "comm="]).1,
+       URL(fileURLWithPath: processName).lastPathComponent == URL(fileURLWithPath: name).lastPathComponent {
         throw RemovalError(message: "묘리 프로세스가 아직 실행 중입니다. 개발 실행을 포함해 묘리를 종료한 뒤 다시 시도해주세요.")
     }
     if ollama {
