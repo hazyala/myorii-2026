@@ -42,22 +42,33 @@ struct Tests {
         try Data("shared-key".utf8).write(to: plan.home.appendingPathComponent(".ollama/id_ed25519"))
     }
     static func main() throws {
-        try test("default removes app + DB together; preserves Ollama, models and shared files") { root, plan in
+        try test("default removes app and preserves DB, Ollama, models and shared files") { root, plan in
             try fixture(plan)
             let targets = try plan.targets()
-            try check(targets.count == 2, "default targets")
+            try check(targets.count == 1, "default targets")
             let trash = root.appendingPathComponent("Trash")
             try directory(trash)
             let result = try plan.execute(targets) { try fm.moveItem(at: $0, to: trash.appendingPathComponent($0.lastPathComponent)) }
-            try check(result.count == 2, "removed count")
-            try check(!plan.exists(plan.home.appendingPathComponent("Library/Application Support/Myorii")), "DB removed")
+            try check(result.count == 1, "removed count")
+            try check(plan.exists(plan.home.appendingPathComponent("Library/Application Support/Myorii")), "DB preserved")
             for file in ["myorii.db", "myorii.db-wal", "myorii.db-shm"] {
-                try check(plan.exists(trash.appendingPathComponent("Myorii/\(file)")), "DB sidecars preserved in trash")
+                try check(plan.exists(plan.home.appendingPathComponent("Library/Application Support/Myorii/\(file)")), "DB sidecars preserved")
             }
             try check(plan.exists(plan.applications.appendingPathComponent("Ollama.app")), "Ollama preserved")
             try check(plan.exists(plan.home.appendingPathComponent(".ollama/models")), "models preserved")
         }
-        for options in [(true, false, 3), (false, true, 3), (true, true, 4)] {
+        try test("selected data moves database and sidecars to trash") { root, initial in
+            var plan = initial; plan.removeData = true
+            try fixture(plan)
+            let trash = root.appendingPathComponent("Trash"); try directory(trash)
+            let targets = try plan.targets()
+            try check(targets.count == 2, "app and data selected")
+            _ = try plan.execute(targets) { try fm.moveItem(at: $0, to: trash.appendingPathComponent($0.lastPathComponent)) }
+            for file in ["myorii.db", "myorii.db-wal", "myorii.db-shm"] {
+                try check(plan.exists(trash.appendingPathComponent("Myorii/\(file)")), "database and sidecars moved")
+            }
+        }
+        for options in [(true, false, 2), (false, true, 2), (true, true, 3)] {
             try test("optional removal \(options)") { root, initial in
                 try fixture(initial)
                 var plan = initial; plan.removeOllama = options.0; plan.removeModels = options.1
@@ -70,7 +81,8 @@ struct Tests {
                 try check(plan.exists(plan.home.appendingPathComponent(".ollama/id_ed25519")), "shared keys untouched")
             }
         }
-        try test("missing app still finds DB, then empty plan") { _, plan in
+        try test("selected data is found without an app, then empty plan") { _, initial in
+            var plan = initial; plan.removeData = true
             let data = plan.home.appendingPathComponent("Library/Application Support/Myorii")
             try directory(data)
             try check(tryCount(plan) == 1, "DB found")
@@ -99,7 +111,8 @@ struct Tests {
             try reject { _ = try plan.targets() }
             try check(plan.exists(external), "external intact")
         }
-        try test("symlink parent refuses DB deletion") { root, plan in
+        try test("symlink parent refuses DB deletion") { root, initial in
+            var plan = initial; plan.removeData = true
             let external = root.appendingPathComponent("external"); try directory(external.appendingPathComponent("Myorii"))
             try directory(plan.home.appendingPathComponent("Library"))
             try fm.createSymbolicLink(at: plan.home.appendingPathComponent("Library/Application Support"), withDestinationURL: external)
@@ -133,7 +146,8 @@ struct Tests {
             try reject { _ = try plan.execute([RemovalTarget(url: root, label: "external", bundleID: nil)]) { _ in called = true } }
             try check(!called, "zero mutation")
         }
-        try test("permission failure reports partial progress and preserves remaining DB") { root, plan in
+        try test("permission failure reports partial progress and preserves remaining DB") { root, initial in
+            var plan = initial; plan.removeData = true
             try fixture(plan)
             let targets = try plan.targets()
             let trash = root.appendingPathComponent("Trash"); try directory(trash)
@@ -151,7 +165,8 @@ struct Tests {
             try check(plan.exists(plan.home.appendingPathComponent("Library/Application Support/Myorii/myorii.db")), "remaining DB intact")
         }
         if CommandLine.arguments.contains("--native-trash") {
-            try test("native macOS Trash roundtrip with disposable fixtures only") { root, plan in
+            try test("native macOS Trash roundtrip with disposable fixtures only") { root, initial in
+                var plan = initial; plan.removeData = true
                 try fixture(plan)
                 var moved: [(URL, URL)] = []
                 defer {

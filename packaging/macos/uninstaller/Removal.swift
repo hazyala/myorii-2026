@@ -15,6 +15,7 @@ struct RemovalPlan {
     let home: URL
     let applications: URL
     var extraApps: [URL] = []
+    var removeData = false
     var removeOllama = false
     var removeModels = false
     let fm = FileManager.default
@@ -67,16 +68,17 @@ struct RemovalPlan {
             if exists(url) { result.append(RemovalTarget(url: url, label: "Ollama 전체 모델", bundleID: nil)) }
         }
         let database = home.appendingPathComponent("Library/Application Support/Myorii")
-        if exists(database) { result.append(RemovalTarget(url: database, label: "묘리 데이터 (대화·할일·메모·설정)", bundleID: nil)) }
+        if removeData && exists(database) { result.append(RemovalTarget(url: database, label: "묘리 데이터 (대화·할일·메모·설정)", bundleID: nil)) }
         for (path, label) in [
             ("Library/Caches/app.myorii.desktop", "묘리 캐시"),
             ("Library/Caches/Myorii", "묘리 캐시"),
-            ("Library/Preferences/app.myorii.desktop.plist", "묘리 환경설정"),
             ("Library/Saved Application State/app.myorii.desktop.savedState", "묘리 저장된 창 상태")
         ] {
             let url = home.appendingPathComponent(path)
             if exists(url) { result.append(RemovalTarget(url: url, label: label, bundleID: nil)) }
         }
+        let preferences = home.appendingPathComponent("Library/Preferences/app.myorii.desktop.plist")
+        if removeData && exists(preferences) { result.append(RemovalTarget(url: preferences, label: "묘리 환경설정", bundleID: nil)) }
         // Validate the entire plan before the first mutation.
         for target in result { try validate(target) }
         return result
